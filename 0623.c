@@ -13,8 +13,8 @@ struct name
 int main()
 {
   int i, fd[2], n;
-  char buf[BUFSIZ];
   pid_t pid;
+  struct name buf;
 
   struct name nlist[4] =
       {
@@ -42,14 +42,14 @@ int main()
     close(fd[1]); // 使わないファイルディスクリプタを閉じる
     for (;;)
     {
-      n = read(fd[0], buf, BUFSIZ); // pipeから読み込む
+      n = read(fd[0], &buf, sizeof(struct name)); // pipeから読み込む
       if (n <= 0)
       {
         exit(0);
       }
       else
       {
-        write(1, buf, n); // 標準出力に書き込む
+        write(1, &buf, n); // 標準出力に書き込む
       }
     }
   }
